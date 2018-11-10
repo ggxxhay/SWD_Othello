@@ -85,6 +85,21 @@ public class Controller implements ActionListener {
             int xClicked = Integer.parseInt(btn.getName().substring(btn.getName().length() - 2, btn.getName().length() - 1));
             int yClicked = Integer.parseInt(btn.getName().substring(btn.getName().length() - 1));
             System.out.println(xClicked + "-" + yClicked);
+            // có hàm check xem người chơi có được đánh ở ô này không trả về true false
+            // ví dụ tra ve boolean isValiable = true;
+            boolean isValiable = true;
+            if (isValiable) {
+                // xét xem đó là người chơi "Client - Rival" hay "Server - you"
+                // nếu client thì cho 1 tham số int là 2, còn là server thì là 1
+                // ví dụ đây là client
+                // xu ly o day
+                int who = 2;
+                if (who==2) {
+                    btn.setBackground(Color.WHITE);
+                } else if (who==1) {
+                    btn.setBackground(Color.BLACK);
+                }
+            }
         }
     }
     
