@@ -2,3 +2,5 @@
 OthelloGame/nbproject/private/private.xml
 OthelloGame/nbproject/private/private.properties
 /OthelloGame/build/
+/nbproject/private/
+/build/
