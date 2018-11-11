@@ -5,7 +5,7 @@
  */
 package UI;
 
-import Controller.Controller;
+import othellogame.Controller;
 
 /**
  *
