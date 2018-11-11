@@ -64,18 +64,31 @@ public class Controller implements ActionListener {
     }
     
     
-//    private void checkAllValidMove() {
-//        int count = 0;
-//        for (int i = 0; i < broadSize; i++) {
-//            for (int j = 0; j < broadSize; j++) {
-//                if (isValidMove(playerTurn, i, j)) {
-//                    buttonState[i][j] = 2;
-//                    count++;
-//                }
-//            }
-//        }
-//    }
-//    
+    public void initialChangeTurn(JLabel label) {
+        if (playerTurn == 1) {
+            label.setText("Your Turn");
+        } else {
+            label.setText("Rival's Turn");
+        }
+    }
+    
+    public void initialPlayerPoint(JLabel label, JLabel label1) {
+        label.setText(blackCount+"");
+        label1.setText(whiteCount+"");
+    }
+    
+    private void checkAllValidMove() {
+        int count = 0;
+        for (int i = 0; i < broadSize; i++) {
+            for (int j = 0; j < broadSize; j++) {
+                if (isValidMove(playerTurn, i, j)) {
+                    buttonState[i][j] = 2;
+                    count++;
+                }
+            }
+        }
+    }
+    
     private boolean isValidMove(int color, int row, int col) {
         if (buttonState[row][col] != 0) {
             return false;
@@ -142,13 +155,8 @@ public class Controller implements ActionListener {
         }
         
         // check all valid move
-        for (int i = 0; i < broadSize; i++) {
-            for (int j = 0; j < broadSize; j++) {
-                if (isValidMove(playerTurn, i, j)) {
-                    buttonState[i][j] = 2;
-                }
-            }
-        }
+        checkAllValidMove();
+        
         listComponents = myPanel.getComponents();
         myPanel.revalidate();
         
