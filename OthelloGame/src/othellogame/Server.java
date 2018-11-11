@@ -5,6 +5,7 @@
  */
 package othellogame;
 
+import UI.PlayGround;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -56,6 +57,9 @@ public class Server {
             // Mở luồng vào ra trên Socket tại Server.
             is = new BufferedReader(new InputStreamReader(socketOfServer.getInputStream()));
             os = new BufferedWriter(new OutputStreamWriter(socketOfServer.getOutputStream()));
+            
+            PlayGround playGround = new PlayGround();
+            
             // Nhận được dữ liệu từ người dùng và gửi lại trả lời.
             while (true) {
                 // Đọc dữ liệu tới server (Do client gửi tới).
@@ -68,25 +72,29 @@ public class Server {
 //                os.newLine();
 //                // Đẩy dữ liệu đi
 //                os.flush();
-                
+                if (line.equals(StaticVariables.message_surrender)) {
 
-                if(line.equals(StaticVariables.message_surrender)){
-                    
                 }
-                
+
                 // Nếu người dùng gửi tới QUIT (Muốn kết thúc trò chuyện).
                 if (line.equals(StaticVariables.message_quit)) {
-                    
+
                     break;
                 }
-                
+
                 // When player make a move.
-                if(!StaticVariables.movePosition.equals("")){
+                if (!StaticVariables.movePosition.equals("")) {
                     os.write(StaticVariables.movePosition);
                     os.newLine();
                     os.flush();
                     // Reset the position.
                     StaticVariables.movePosition = "";
+                }
+                
+                // When opponent move.
+                int[] movePos = StaticVariables.ConvertMovePos(line);
+                if (movePos != null) {
+                    
                 }
             }
         } catch (IOException e) {
@@ -94,4 +102,5 @@ public class Server {
             e.printStackTrace();
         }
     }
+   
 }

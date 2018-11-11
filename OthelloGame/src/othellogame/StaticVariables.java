@@ -13,4 +13,15 @@ public class StaticVariables {
     public static String movePosition;
     public static String message_surrender = "surrender";
     public static String message_quit = "quit";
+    
+    public static int[] ConvertMovePos(String movePos){
+        try{
+            int xPos = Integer.parseInt(movePos.charAt(0)+"");
+            int yPos = Integer.parseInt(movePos.charAt(1)+"");
+            return new int[]{xPos, yPos};
+        }catch(NumberFormatException e){
+            System.out.println(e.toString());
+            return null;
+        }
+    }
 }
