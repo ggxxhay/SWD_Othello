@@ -41,6 +41,8 @@ public class Server {
     public void run() {
         try {
             listener = new ServerSocket(port);
+            PlayGround playGround = new PlayGround();
+            playGround.setVisible(true);
         } catch (IOException e) {
             System.out.println(e);
 //            System.exit(1);
@@ -58,7 +60,8 @@ public class Server {
             is = new BufferedReader(new InputStreamReader(socketOfServer.getInputStream()));
             os = new BufferedWriter(new OutputStreamWriter(socketOfServer.getOutputStream()));
             
-            PlayGround playGround = new PlayGround();
+//            PlayGround playGround = new PlayGround(1);
+//            playGround.setVisible(true);
             
             // Nhận được dữ liệu từ người dùng và gửi lại trả lời.
             while (true) {
@@ -102,5 +105,8 @@ public class Server {
             e.printStackTrace();
         }
     }
-   
+    public static void main(String[] args) {
+        Server sv = new Server(9999);
+        sv.run();
+    }
 }

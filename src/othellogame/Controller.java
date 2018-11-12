@@ -25,21 +25,22 @@ import javax.swing.JPanel;
  */
 public class Controller implements ActionListener {
     
-    private int BUTTONSIZE = 40;
+    private final int BUTTONSIZE = 40;
     // number of each row
-    private int broadSize = 8;
+    private final int broadSize = 8;
     // store all components in panel
     private Component[] listComponents;
     private boolean isStarted = false;
-    private int playerTurn = 1;
-    private Integer[][] buttonState = new Integer[broadSize][broadSize];
-    private int invalidMoveCount = 0;
+    public static int playerTurn;
+    private final Integer[][] buttonState = new Integer[broadSize][broadSize];
+    private final int invalidMoveCount = 0;
     private int blackCount = 2;
     private int whiteCount = 2;
     
     private void setProperty(int i, int j, JButton btn, int state) {
         btn.setName("btn"+ i + "" + j);
         btn.setPreferredSize(new Dimension(BUTTONSIZE, BUTTONSIZE));
+        System.out.println("aa"+ state);
         switch (state) {
             case -1:
                 // is white = -1
@@ -118,36 +119,60 @@ public class Controller implements ActionListener {
         return true;
     }
     
+    
+    private void disableInvalidButton() {
+        int x= 0;
+        for (int i = 0; i < broadSize; i++) {
+            for (int j = 0; j < broadSize; j++) {
+                System.out.print(buttonState[i][j] + "  ");
+                x++;
+                if (x==broadSize) {
+                    System.out.println();
+                    x=0;
+                }
+                if (buttonState[i][j] == 0) {
+                    JButton b = new JButton();
+                    b = (JButton) listComponents[i * 8 + j];
+                    b.removeActionListener(this);
+                }
+            }
+        }
+    }
     public void initialButton(JPanel myPanel) {
         //remove all Component in this panel
         myPanel.removeAll();
         //set layout to grid
         myPanel.setLayout(new GridLayout(broadSize, broadSize));
-        JButton btn;
+        System.out.println("1");
         for (int i = 0; i < broadSize; i++) {
             for (int j = 0; j < broadSize; j++) {
-                btn = new JButton();
+                JButton btn = new JButton();
                 myPanel.add(btn);
                 if (i==3 && j == 3) {
+                    System.out.println("b");
                     setProperty(i, j, btn, -1);
                     buttonState[i][j] = -1;
                     btn.removeActionListener(this);
                 } else
                 if (i==3 && j == 4) {
+                    System.out.println("b");
                     setProperty(i, j, btn, 1);
                     buttonState[i][j] = 1;
                     btn.removeActionListener(this);
                 } else
                 if (i==4 && j == 3) {
+                    System.out.println("b");
                     setProperty(i, j, btn, 1);
                     buttonState[i][j] = 1;
                     btn.removeActionListener(this);
                 } else
                 if (i==4 && j == 4) {
+                    System.out.println("b");
                     setProperty(i, j, btn, -1);
                     buttonState[i][j] = -1;
                     btn.removeActionListener(this);
                 } else {
+                    System.out.println("b");
                     setProperty(i, j, btn, 0);
                     buttonState[i][j] = 0;
                 }
@@ -162,93 +187,75 @@ public class Controller implements ActionListener {
         
         // remove action listener of invalid button
         // can enable button = false because disable button's background not working
-        for (int i = 0; i < broadSize; i++) {
-            for (int j = 0; j < broadSize; j++) {
-                if (buttonState[i][j] == 0) {
-                    JButton b = new JButton();
-                    b = (JButton) listComponents[i * 8 + j];
-                    b.removeActionListener(this);
+        disableInvalidButton();
+    }
+    
+    private void updateButton(boolean isMoved) {
+        if (isMoved) {
+            for (int i = 0; i < broadSize; i++) {
+                for (int j = 0; j < broadSize; j++) {
+                    if (buttonState[i][j] == 2) {
+                        buttonState[i][j] = 0;
+                    }
                 }
             }
         }
+        
+        for (int i = 0; i < broadSize; i++) {
+            for (int j = 0; j < broadSize; j++) {
+                JButton b = new JButton();
+                b = (JButton) listComponents[i * 8 + j];
+                if (buttonState[i][j] == 1) {
+                    b.setBackground(Color.BLACK);
+                    b.setForeground(Color.BLACK);
+                } else if (buttonState[i][j] == -1) {
+                    b.setBackground(Color.WHITE);
+                    b.setForeground(Color.WHITE);
+                }
+            }
+        }
+        disableInvalidButton();
     }
     
-//    void UpdateButtons(boolean isMoved)
-//    {
-//        if (isMoved)
-//        {
-//            // Update buttons' states after moving.
-//            for (int i = 0; i < broadSize; i++)
-//            {
-//                for (int j = 0; j < broadSize; j++)
-//                {
-//                    switch (buttonState[i][j])
-//                    {
-//                        case 2:
-//                            buttonState[i][j] = 0;
-//                            break;
-//                    }
-//                }
-//            }
-//        }
-//        else
-//        {
-//            // Enable canMoved buttons.
-//            for (int i = 0; i < broadSize; i++)
-//            {
-//                for (int j = 0; j < broadSize; j++)
-//                {
-//                    if (buttonState[i][j] == 2)
-//                    {
-////                        btn.addActionListener(this);
-//                    }
-//                    else
-//                    {
-////                        btn.removeActionListener(this);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    public void MakeMove(int color, int row, int col)
-//    {
-//        // Set array's value
-//        buttonState[row][col] = color;
-//        if (playerTurn == 1)
-//        {
-//            blackCount++;
-//        }
-//        else
-//        {
-//            whiteCount++;
-//        }
-//
-//        // Flip outflanking position
-//        int dr, dc;
-//        int r, c;
-//        for (dr = -1; dr <= 1; dr++)
-//        {
-//            for (dc = -1; dc <= 1; dc++)
-//            {
-//                if (!(dr == 0 && dc == 0) && IsOutflanking(color, row, col, dr, dc))
-//                {
-//                    r = row + dr;
-//                    c = col + dc;
-//                    while (buttonState[r][c] == -color)
-//                    {
-//                        buttonState[r][c] = color;
-//                        blackCount += playerTurn;
-//                        whiteCount -= playerTurn;
-//                        r += dr;
-//                        c += dc;
-//                    }
-//                }
-//            }
-//        }
-//
-////        UpdateButtons(true);
-//    }
+    private void makeMove(int row, int col) {
+        // set piece that player clicked
+        if (buttonState[row][col] != 2) {
+            return;
+        }
+        
+        buttonState[row][col] = playerTurn;
+        
+        if (playerTurn == 1) {
+            whiteCount++;
+        } else {
+            blackCount++;
+        }
+        
+        int dr, dc;
+        int r, c;
+        for (dr = -1; dr <= 1; dr++)
+        {
+            for (dc = -1; dc <= 1; dc++)
+            {
+                if (!(dr == 0 && dc == 0) && IsOutflanking(playerTurn, row, col, dr, dc))
+                {
+                    r = row + dr;
+                    c = col + dc;
+                    while (buttonState[r][c] == -playerTurn)
+                    {
+                        buttonState[r][c] = playerTurn;
+                        blackCount -= playerTurn;
+                        whiteCount += playerTurn;
+                        r += dr;
+                        c += dc;
+                    }
+                }
+            }
+        }
+        System.out.println(blackCount + "-" + whiteCount);
+        updateButton(true);
+        StaticVariables.movePosition = row+""+col;
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -260,7 +267,8 @@ public class Controller implements ActionListener {
             // get index of button click
             int xClicked = Integer.parseInt(btn.getName().substring(btn.getName().length() - 2, btn.getName().length() - 1));
             int yClicked = Integer.parseInt(btn.getName().substring(btn.getName().length() - 1));
-            System.out.println(xClicked + "-" + yClicked);
+//            System.out.println(xClicked + "-" + yClicked);
+            makeMove(xClicked, yClicked);
         }
     }
     
