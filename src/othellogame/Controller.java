@@ -192,7 +192,6 @@ public class Controller implements ActionListener {
     }
     
     private void updateButton(boolean isMoved) {
-        System.out.println("aa-" + playerTurn);
         if (isMoved) {
             for (int i = 0; i < broadSize; i++) {
                 for (int j = 0; j < broadSize; j++) {
@@ -257,6 +256,7 @@ public class Controller implements ActionListener {
         System.out.println(blackCount + "-" + whiteCount);
         updateButton(true);
         StaticVariables.movePosition = row+""+col;
+        System.out.println("aa1-" + playerTurn);
     }
     
     @Override
