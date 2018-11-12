@@ -39,15 +39,14 @@ public class Server {
     }
 
     public void run() {
+        listener = null;
         try {
             listener = new ServerSocket(port);
-            PlayGround playGround = new PlayGround();
-            playGround.setVisible(true);
         } catch (IOException e) {
             System.out.println(e);
 //            System.exit(1);
         }
-
+        socketOfServer = null;
         try {
             System.out.println("Server is waiting to accept user...");
 
@@ -57,17 +56,17 @@ public class Server {
             System.out.println("Accept a client!");
 
             // Mở luồng vào ra trên Socket tại Server.
-            is = new BufferedReader(new InputStreamReader(socketOfServer.getInputStream()));
             os = new BufferedWriter(new OutputStreamWriter(socketOfServer.getOutputStream()));
+            is = new BufferedReader(new InputStreamReader(socketOfServer.getInputStream()));
             
-//            PlayGround playGround = new PlayGround(1);
-//            playGround.setVisible(true);
+            PlayGround playGround = new PlayGround(1);
+            playGround.setVisible(true);
             
             // Nhận được dữ liệu từ người dùng và gửi lại trả lời.
             while (true) {
                 // Đọc dữ liệu tới server (Do client gửi tới).
                 line = is.readLine();
-
+                System.out.println("v" + line);
                 // Ghi vào luồng đầu ra của Socket tại Server.
                 // (Nghĩa là gửi tới Client).
 //                os.write(">> " + line);

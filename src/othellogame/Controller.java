@@ -31,16 +31,22 @@ public class Controller implements ActionListener {
     // store all components in panel
     private Component[] listComponents;
     private boolean isStarted = false;
-    public static int playerTurn;
+    public int playerTurn;
+    
     private final Integer[][] buttonState = new Integer[broadSize][broadSize];
     private final int invalidMoveCount = 0;
     private int blackCount = 2;
     private int whiteCount = 2;
+
+    public Controller(int playerTurn) {
+        this.playerTurn = playerTurn;
+    }
+    
+    
     
     private void setProperty(int i, int j, JButton btn, int state) {
         btn.setName("btn"+ i + "" + j);
         btn.setPreferredSize(new Dimension(BUTTONSIZE, BUTTONSIZE));
-        System.out.println("aa"+ state);
         switch (state) {
             case -1:
                 // is white = -1
@@ -49,8 +55,8 @@ public class Controller implements ActionListener {
                 break;
             case 0:
                 // is empty = 0
-                btn.setBackground(new Color(168, 168, 168, 1));
-                btn.setForeground(new Color(168, 168, 168, 1));
+                btn.setBackground(Color.GRAY);
+                btn.setForeground(Color.GRAY);
                 break;
             case 1:
                 // is black = 1
@@ -79,6 +85,7 @@ public class Controller implements ActionListener {
     }
     
     private void checkAllValidMove() {
+        System.out.println("aa-" + playerTurn);
         int count = 0;
         for (int i = 0; i < broadSize; i++) {
             for (int j = 0; j < broadSize; j++) {
@@ -143,36 +150,30 @@ public class Controller implements ActionListener {
         myPanel.removeAll();
         //set layout to grid
         myPanel.setLayout(new GridLayout(broadSize, broadSize));
-        System.out.println("1");
         for (int i = 0; i < broadSize; i++) {
             for (int j = 0; j < broadSize; j++) {
                 JButton btn = new JButton();
                 myPanel.add(btn);
                 if (i==3 && j == 3) {
-                    System.out.println("b");
                     setProperty(i, j, btn, -1);
                     buttonState[i][j] = -1;
                     btn.removeActionListener(this);
                 } else
                 if (i==3 && j == 4) {
-                    System.out.println("b");
                     setProperty(i, j, btn, 1);
                     buttonState[i][j] = 1;
                     btn.removeActionListener(this);
                 } else
                 if (i==4 && j == 3) {
-                    System.out.println("b");
                     setProperty(i, j, btn, 1);
                     buttonState[i][j] = 1;
                     btn.removeActionListener(this);
                 } else
                 if (i==4 && j == 4) {
-                    System.out.println("b");
                     setProperty(i, j, btn, -1);
                     buttonState[i][j] = -1;
                     btn.removeActionListener(this);
                 } else {
-                    System.out.println("b");
                     setProperty(i, j, btn, 0);
                     buttonState[i][j] = 0;
                 }
@@ -191,6 +192,7 @@ public class Controller implements ActionListener {
     }
     
     private void updateButton(boolean isMoved) {
+        System.out.println("aa-" + playerTurn);
         if (isMoved) {
             for (int i = 0; i < broadSize; i++) {
                 for (int j = 0; j < broadSize; j++) {
