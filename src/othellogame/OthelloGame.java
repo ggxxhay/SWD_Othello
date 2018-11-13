@@ -5,6 +5,8 @@
  */
 package othellogame;
 
+import UI.PlayGround;
+
 /**
  *
  * @author ThangHQ

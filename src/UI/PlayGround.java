@@ -19,10 +19,14 @@ public class PlayGround extends javax.swing.JFrame {
     
     private final Controller controllers;
     
+    
     public PlayGround() {
         initComponents();
-        
-        controllers = new Controller();
+        controllers = new Controller(1);
+    }
+    public PlayGround(int playerTurn) {
+        initComponents();
+        controllers = new Controller(playerTurn);
         controllers.initialButton(playGroundPanel);
         controllers.initialChangeTurn(turnName);
         controllers.initialPlayerPoint(youScore, rivalScore);

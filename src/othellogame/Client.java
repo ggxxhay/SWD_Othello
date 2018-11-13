@@ -40,6 +40,7 @@ class ClientSide {
         try {
             client = new Socket(host, port);
             // Mở luồng vào ra trên Socket tại Client.
+            System.out.println("Connecting to server");
             is = new BufferedReader(new InputStreamReader(client.getInputStream()));
             os = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
         } catch (UnknownHostException e) {
@@ -95,13 +96,13 @@ class ClientSide {
 public class Client {
 
     public static void main(String[] args) {
-        ClientSide client = new ClientSide("localhost", 4321);
+        ClientSide client = new ClientSide("localhost", 9999);
         client.makeConnectToServer();
-        Thread u = new Thread() {
-            public void run() {
-                client.receiveDataFromServer();
-            }
-        };
-        u.start();
+//        Thread u = new Thread() {
+//            public void run() {
+//                client.receiveDataFromServer();
+//            }
+//        };
+//        u.start();
     }
 }
