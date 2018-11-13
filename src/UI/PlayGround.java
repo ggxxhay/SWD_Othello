@@ -17,7 +17,7 @@ public class PlayGround extends javax.swing.JFrame {
      * Creates new form PlayGround
      */
     
-    private final Controller controllers;
+    public final Controller controllers;
     
     
     public PlayGround() {

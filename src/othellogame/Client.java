@@ -5,6 +5,7 @@
  */
 package othellogame;
 
+import UI.PlayGround;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -65,17 +66,53 @@ class ClientSide {
     public void receiveDataFromServer() {
         try {
             while (true) {
-                // read data from server send
+                client = new Socket(host, port);
+                // Mở luồng vào ra trên Socket tại Client.
+                System.out.println("Connecting to server");
+                os = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+                is = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+                PlayGround playGround = new PlayGround(-1);
+                playGround.setVisible(true);
+                
+                // Đọc dữ liệu tới server (Do client gửi tới).
                 line = is.readLine();
-                // Nếu người dùng gửi tới surrender (Muốn đầu hàng game).
+                System.out.println("v" + line);
+                // Ghi vào luồng đầu ra của Socket tại Server.
+                // (Nghĩa là gửi tới Client).
+//                os.write(">> " + line);
+//                // Kết thúc dòng
+//                os.newLine();
+//                // Đẩy dữ liệu đi
+//                os.flush();
                 if (line.equals(StaticVariables.message_surrender)) {
-                    break;
+
                 }
-                // Nếu người dùng gửi tới quit (Muốn kết thúc game).
+
+                // Nếu người dùng gửi tới QUIT (Muốn kết thúc trò chuyện).
                 if (line.equals(StaticVariables.message_quit)) {
+
                     break;
                 }
-                StaticVariables.movePosition = line;
+
+                // When player make a move.
+                if (!StaticVariables.movePosition.equals("")) {
+                    os.write(StaticVariables.movePosition);
+                    os.newLine();
+                    os.flush();
+                    // Reset the position.
+                    StaticVariables.movePosition = "";
+                }
+                
+                // When opponent move.
+                int[] movePos = StaticVariables.ConvertMovePos(line);
+                if (movePos != null) {
+                    System.out.println(line);
+                    playGround.controllers.playerTurn = 1;
+                    playGround.controllers.makeMove(movePos[0], movePos[1]);
+                    playGround.controllers.playerTurn = -1;
+                    playGround.controllers.checkValidMove();
+                }
             }
 
         } catch (IOException e) {
@@ -98,6 +135,9 @@ public class Client {
     public static void main(String[] args) {
         ClientSide client = new ClientSide("localhost", 9999);
         client.makeConnectToServer();
+//        while(true){
+            client.receiveDataFromServer();
+//        }
 //        Thread u = new Thread() {
 //            public void run() {
 //                client.receiveDataFromServer();

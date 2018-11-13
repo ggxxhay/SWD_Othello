@@ -25,18 +25,18 @@ import javax.swing.JPanel;
  */
 public class Controller implements ActionListener {
     
-    private final int BUTTONSIZE = 40;
+    public final int BUTTONSIZE = 40;
     // number of each row
-    private final int broadSize = 8;
+    public final int broadSize = 8;
     // store all components in panel
-    private Component[] listComponents;
-    private boolean isStarted = false;
+    public Component[] listComponents;
+    public boolean isStarted = false;
     public int playerTurn;
     
-    private final Integer[][] buttonState = new Integer[broadSize][broadSize];
-    private final int invalidMoveCount = 0;
-    private int blackCount = 2;
-    private int whiteCount = 2;
+    public final Integer[][] buttonState = new Integer[broadSize][broadSize];
+    public final int invalidMoveCount = 0;
+    public int blackCount = 2;
+    public int whiteCount = 2;
 
     public Controller(int playerTurn) {
         this.playerTurn = playerTurn;
@@ -44,7 +44,7 @@ public class Controller implements ActionListener {
     
     
     
-    private void setProperty(int i, int j, JButton btn, int state) {
+    public void setProperty(int i, int j, JButton btn, int state) {
         btn.setName("btn"+ i + "" + j);
         btn.setPreferredSize(new Dimension(BUTTONSIZE, BUTTONSIZE));
         switch (state) {
@@ -84,7 +84,7 @@ public class Controller implements ActionListener {
         label1.setText(whiteCount+"");
     }
     
-    private void checkAllValidMove() {
+    public void checkValidMove() {
         System.out.println("aa-" + playerTurn);
         int count = 0;
         for (int i = 0; i < broadSize; i++) {
@@ -97,7 +97,7 @@ public class Controller implements ActionListener {
         }
     }
     
-    private boolean isValidMove(int color, int row, int col) {
+    public boolean isValidMove(int color, int row, int col) {
         if (buttonState[row][col] != 0) {
             return false;
         }
@@ -112,7 +112,7 @@ public class Controller implements ActionListener {
         return false;
     }
     
-    private boolean IsOutflanking(int color, int row, int col, int dr, int dc)
+    public boolean IsOutflanking(int color, int row, int col, int dr, int dc)
     {
         int r = row + dr;
         int c = col + dc;
@@ -127,7 +127,7 @@ public class Controller implements ActionListener {
     }
     
     
-    private void disableInvalidButton() {
+    public void disableInvalidButton() {
         int x= 0;
         for (int i = 0; i < broadSize; i++) {
             for (int j = 0; j < broadSize; j++) {
@@ -181,7 +181,7 @@ public class Controller implements ActionListener {
         }
         
         // check all valid move
-        checkAllValidMove();
+        checkValidMove();
         
         listComponents = myPanel.getComponents();
         myPanel.revalidate();
@@ -191,7 +191,7 @@ public class Controller implements ActionListener {
         disableInvalidButton();
     }
     
-    private void updateButton(boolean isMoved) {
+    public void updateButton(boolean isMoved) {
         System.out.println("aa-" + playerTurn);
         if (isMoved) {
             for (int i = 0; i < broadSize; i++) {
@@ -219,7 +219,7 @@ public class Controller implements ActionListener {
         disableInvalidButton();
     }
     
-    private void makeMove(int row, int col) {
+    public void makeMove(int row, int col) {
         // set piece that player clicked
         if (buttonState[row][col] != 2) {
             return;
@@ -257,6 +257,7 @@ public class Controller implements ActionListener {
         System.out.println(blackCount + "-" + whiteCount);
         updateButton(true);
         StaticVariables.movePosition = row+""+col;
+        System.out.println(StaticVariables.movePosition+"move pos");
     }
     
     @Override
