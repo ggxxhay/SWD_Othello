@@ -8,104 +8,133 @@ package othellogame;
 import UI.PlayGround;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ThangHQ
  */
-public class Server {
+class ServerSide {
 
-    ServerSocket listener = null;
-    String line;
+    ServerSocket server = null;
     BufferedReader is;
     BufferedWriter os;
-    Socket socketOfServer = null;
+    DataInputStream in;
+    DataOutputStream ou;
+    Socket client = null;
+    PlayGround playGround;
 
 //    private String host;
     private int port;
 
-    public Server(String host, int port) {
+    public ServerSide(String host, int port) {
 //        this.host = host;
         this.port = port;
     }
 
-    public Server(int port) {
+    public ServerSide(int port) {
         this.port = port;
+        playGround = new PlayGround(1);
+        playGround.setVisible(true);
+        playGround.setTitle("Server");
+        makeConnectToClient();
+        Thread u = new Thread() {
+            public void run() {
+                receiveDataFromClient();
+            }
+        };
+        u.start();
     }
 
-    public void run() {
-        listener = null;
+    void makeConnectToClient() {
+        server = null;
         try {
-            listener = new ServerSocket(port);
+            server = new ServerSocket(port);
         } catch (IOException e) {
-            System.out.println(e);
-//            System.exit(1);
+            System.out.println("Error on port: " + port + " + e");
+            System.exit(1);
         }
-        socketOfServer = null;
+        System.out.println("Server already setup and waiting for client connection ...");
+
+        client = null;
         try {
-            System.out.println("Server is waiting to accept user...");
+            client = server.accept();
+            playGround.controllers.ou = new DataOutputStream(client.getOutputStream());
+            in = new DataInputStream(client.getInputStream());
+            System.out.println("Acept client");
+        } catch (IOException e) {
+            System.out.println("Did not accept connection: " + e);
+            System.exit(1);
+        }
+    }
 
-            // Chấp nhận một yêu cầu kết nối từ phía Client.
-            // Đồng thời nhận được một đối tượng Socket tại server.
-            socketOfServer = listener.accept();
-            System.out.println("Accept a client!");
+    void receiveDataFromClient() {
+        boolean done = false;
+        String line = "";
+        try {
+            while (!done) {
+                line = in.readLine();
+                System.out.println(",mm" + line);
+                if (line.equalsIgnoreCase(".bye")) {
+                    done = true;
+                } else {
+//                    if (line.equals(StaticVariables.message_surrender)) {
+//
+//                    }
+//
+//                    if (line.equals(StaticVariables.message_quit)) {
+//
+//                    }
 
-            // Mở luồng vào ra trên Socket tại Server.
-            os = new BufferedWriter(new OutputStreamWriter(socketOfServer.getOutputStream()));
-            is = new BufferedReader(new InputStreamReader(socketOfServer.getInputStream()));
-            
-            PlayGround playGround = new PlayGround(1);
-            playGround.setVisible(true);
-            
-            // Nhận được dữ liệu từ người dùng và gửi lại trả lời.
-            while (true) {
-                // Đọc dữ liệu tới server (Do client gửi tới).
-                line = is.readLine();
-                System.out.println("v" + line);
-                // Ghi vào luồng đầu ra của Socket tại Server.
-                // (Nghĩa là gửi tới Client).
-//                os.write(">> " + line);
-//                // Kết thúc dòng
-//                os.newLine();
-//                // Đẩy dữ liệu đi
-//                os.flush();
-                if (line.equals(StaticVariables.message_surrender)) {
+//                    // When player make a move.
+//                    System.out.println(StaticVariables.movePosition + "move");
+//                    if (StaticVariables.movePosition != null) {
+//                        ou.writeBytes(StaticVariables.movePosition + "\n");
+//                        // Reset the position.
+//                        StaticVariables.movePosition = "";
+//                    }
 
-                }
+                    // When opponent move.
+                    int[] movePos = StaticVariables.ConvertMovePos(line);
+                    if (movePos != null) {
+                        System.out.println("server");
+                        playGround.controllers.playerTurn = -1;
+                        playGround.controllers.checkValidMove();
+                        playGround.controllers.makeMove("server", movePos[0], movePos[1]);
+                        playGround.controllers.playerTurn = 1;
+                        System.out.println("server Player turn: " + playGround.controllers.playerTurn);
+                        playGround.controllers.checkValidMove();
 
-                // Nếu người dùng gửi tới QUIT (Muốn kết thúc trò chuyện).
-                if (line.equals(StaticVariables.message_quit)) {
-
-                    break;
-                }
-
-                // When player make a move.
-                if (!StaticVariables.movePosition.equals("")) {
-                    os.write(StaticVariables.movePosition);
-                    os.newLine();
-                    os.flush();
-                    // Reset the position.
-                    StaticVariables.movePosition = "";
-                }
-                
-                // When opponent move.
-                int[] movePos = StaticVariables.ConvertMovePos(line);
-                if (movePos != null) {
-                    
+                    }
                 }
             }
+
         } catch (IOException e) {
-            System.out.println(e);
-            e.printStackTrace();
+            System.out.println("IO Error in streams " + e);
         }
     }
+
+//    public void finalize() {
+//        try {
+//            in.close();
+//            client.close();
+//            server.close();
+//        } catch (IOException e) {
+//            System.out.println("IO Error in streams " + e);
+//        }
+//    }
+}
+
+public class Server {
     public static void main(String[] args) {
-        Server sv = new Server(9999);
-        sv.run();
+        ServerSide sv = new ServerSide(9999);
     }
 }

@@ -5,13 +5,19 @@
  */
 package othellogame;
 
+import UI.PlayGround;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,27 +28,33 @@ class ClientSide {
     Socket client;
     BufferedWriter os;
     BufferedReader is;
-    String line;
+    DataOutputStream ou;
+    DataInputStream in;
+    PlayGround playGround;
 
     private int port;
     private String host;
-
-    public ClientSide(int port) {
-        this.port = port;
-    }
-
+    
     public ClientSide(String host, int port) {
         this.host = host;
         this.port = port;
+        playGround = new PlayGround(1);
+        playGround.setVisible(true);
+        playGround.setTitle("Client");
+        makeConnectToServer();
+        Thread u = new Thread() {
+            public void run() {
+                receiveDataFromServer();
+            }
+        };
+        u.start();
     }
-
-    public void makeConnectToServer() {
+    
+    void makeConnectToServer() {
         try {
             client = new Socket(host, port);
-            // Mở luồng vào ra trên Socket tại Client.
-            System.out.println("Connecting to server");
-            is = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            os = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+            playGround.controllers.ou = new DataOutputStream(client.getOutputStream());
+            in = new DataInputStream(client.getInputStream());
         } catch (UnknownHostException e) {
             System.err.println(host + ": unknown host.");
         } catch (IOException e) {
@@ -50,59 +62,68 @@ class ClientSide {
         }
     }
 
-    public void sendDataToServer(String data) {
+    void receiveDataFromServer() {
+        boolean done = false;
+        String line = "";
         try {
-            os.write(data);
-            os.newLine();
-            os.flush();
-            // Reset the position.
-            StaticVariables.movePosition = "";
-        } catch (IOException e) {
-            System.err.println("I/O error with " + host);
-        }
-    }
+            while (!done) {
+                line = in.readLine();
+                System.out.println("=="+line);
+                if (line.equalsIgnoreCase(".bye")) {
+                    done = true;
+                } else {
+//                    if (line.equals(StaticVariables.message_surrender)) {
+//
+//                    }
+//
+//                    if (line.equals(StaticVariables.message_quit)) {
+//
+//                    }
 
-    public void receiveDataFromServer() {
-        try {
-            while (true) {
-                // read data from server send
-                line = is.readLine();
-                // Nếu người dùng gửi tới surrender (Muốn đầu hàng game).
-                if (line.equals(StaticVariables.message_surrender)) {
-                    break;
+                    // When player make a move.
+//                    System.out.println("move client");
+//                    if (StaticVariables.movePosition != null) {
+//                        ou.writeBytes(StaticVariables.movePosition + "\n");
+//                        os.write(StaticVariables.movePosition);
+//                        os.newLine();
+//                        os.flush();
+//                        // Reset the position.
+//                        StaticVariables.movePosition = "";
+//                    }
+
+                    // When opponent move.
+                    int[] movePos = StaticVariables.ConvertMovePos(line);
+                    System.out.println("cliii" + movePos[0] + "ccc" + movePos[1]);
+                    if (movePos != null) {
+                        System.out.println("clieant");
+                        playGround.controllers.playerTurn = 1;
+                        playGround.controllers.checkValidMove();
+                        playGround.controllers.makeMove("client", movePos[0], movePos[1]);
+                        playGround.controllers.playerTurn = -1;
+                        System.out.println("clieant Player turn: " + playGround.controllers.playerTurn);
+                        playGround.controllers.checkValidMove();
+                    }
                 }
-                // Nếu người dùng gửi tới quit (Muốn kết thúc game).
-                if (line.equals(StaticVariables.message_quit)) {
-                    break;
-                }
-                StaticVariables.movePosition = line;
             }
 
         } catch (IOException e) {
             System.out.println("IO Error in streams " + e);
         }
     }
-
-    public void finalize() {
-        try {
-            os.close();
-            client.close();
-        } catch (IOException e) {
-            System.err.println("I/O error with " + host);
-        }
-    }
+//
+//    public void finalize() {
+//        try {
+//            ou.close();
+//            client.close();
+//        } catch (IOException e) {
+//            System.err.println("I/O error with " + host);
+//        }
+//    }
 }
 
 public class Client {
 
     public static void main(String[] args) {
         ClientSide client = new ClientSide("localhost", 9999);
-        client.makeConnectToServer();
-//        Thread u = new Thread() {
-//            public void run() {
-//                client.receiveDataFromServer();
-//            }
-//        };
-//        u.start();
     }
 }

@@ -5,6 +5,7 @@
  */
 package UI;
 
+import javax.swing.JLabel;
 import othellogame.Controller;
 
 /**
@@ -17,8 +18,7 @@ public class PlayGround extends javax.swing.JFrame {
      * Creates new form PlayGround
      */
     
-    private final Controller controllers;
-    
+    public final Controller controllers;
     
     public PlayGround() {
         initComponents();
@@ -29,7 +29,6 @@ public class PlayGround extends javax.swing.JFrame {
         controllers = new Controller(playerTurn);
         controllers.initialButton(playGroundPanel);
         controllers.initialChangeTurn(turnName);
-        controllers.initialPlayerPoint(youScore, rivalScore);
     }
 
     /**
@@ -46,9 +45,9 @@ public class PlayGround extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        rivalScore = new javax.swing.JLabel();
+        whiteScore = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        youScore = new javax.swing.JLabel();
+        blackScore = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         turnName = new javax.swing.JLabel();
@@ -107,18 +106,18 @@ public class PlayGround extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("x ");
 
-        rivalScore.setBackground(new java.awt.Color(204, 204, 204));
-        rivalScore.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        rivalScore.setForeground(new java.awt.Color(255, 255, 255));
+        whiteScore.setBackground(new java.awt.Color(204, 204, 204));
+        whiteScore.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        whiteScore.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel4.setBackground(new java.awt.Color(204, 204, 204));
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("x ");
         jLabel4.setPreferredSize(new java.awt.Dimension(12, 40));
 
-        youScore.setBackground(new java.awt.Color(204, 204, 204));
-        youScore.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        youScore.setPreferredSize(new java.awt.Dimension(11, 40));
+        blackScore.setBackground(new java.awt.Color(204, 204, 204));
+        blackScore.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        blackScore.setPreferredSize(new java.awt.Dimension(11, 40));
 
         jPanel3.setBackground(new java.awt.Color(0, 0, 0));
         jPanel3.setPreferredSize(new java.awt.Dimension(40, 40));
@@ -157,14 +156,14 @@ public class PlayGround extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(youScore, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(blackScore, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(22, 22, 22))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, broadPointPanelLayout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(16, 16, 16)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rivalScore, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(whiteScore, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23))))
             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(turnName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -178,7 +177,7 @@ public class PlayGround extends javax.swing.JFrame {
                 .addGroup(broadPointPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(broadPointPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(rivalScore, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(whiteScore, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 34, Short.MAX_VALUE)
                 .addComponent(jLabel6)
@@ -187,7 +186,7 @@ public class PlayGround extends javax.swing.JFrame {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
                     .addGroup(broadPointPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(youScore, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)))
+                        .addComponent(blackScore, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(turnName, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(58, Short.MAX_VALUE))
@@ -264,6 +263,7 @@ public class PlayGround extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel blackScore;
     private javax.swing.JPanel broadPointPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -273,8 +273,7 @@ public class PlayGround extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel playGroundPanel;
-    private javax.swing.JLabel rivalScore;
     private javax.swing.JLabel turnName;
-    private javax.swing.JLabel youScore;
+    private javax.swing.JLabel whiteScore;
     // End of variables declaration//GEN-END:variables
 }
