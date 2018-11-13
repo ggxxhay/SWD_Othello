@@ -13,7 +13,11 @@ import java.awt.GridLayout;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,6 +30,7 @@ import javax.swing.JPanel;
 public class Controller implements ActionListener {
     
     public final int BUTTONSIZE = 40;
+    DataOutputStream ou;
     // number of each row
     public final int broadSize = 8;
     // store all components in panel
@@ -272,6 +277,16 @@ public class Controller implements ActionListener {
             int yClicked = Integer.parseInt(btn.getName().substring(btn.getName().length() - 1));
 //            System.out.println(xClicked + "-" + yClicked);
             makeMove(xClicked, yClicked);
+            System.out.println(StaticVariables.movePosition + "move");
+            if (StaticVariables.movePosition != null) {
+                try {
+                    ou.writeBytes(StaticVariables.movePosition + "\n");
+                } catch (IOException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                // Reset the position.
+                StaticVariables.movePosition = "";
+            }
         }
     }
     
