@@ -105,10 +105,14 @@ class ServerSide {
                     // When opponent move.
                     int[] movePos = StaticVariables.ConvertMovePos(line);
                     if (movePos != null) {
+                        System.out.println("server");
                         playGround.controllers.playerTurn = -1;
-                        playGround.controllers.makeMove(movePos[0], movePos[1]);
-                        playGround.controllers.playerTurn = 1;
                         playGround.controllers.checkValidMove();
+                        playGround.controllers.makeMove("server", movePos[0], movePos[1]);
+                        playGround.controllers.playerTurn = 1;
+                        System.out.println("server Player turn: " + playGround.controllers.playerTurn);
+                        playGround.controllers.checkValidMove();
+
                     }
                 }
             }
@@ -118,15 +122,15 @@ class ServerSide {
         }
     }
 
-    public void finalize() {
-        try {
-            in.close();
-            client.close();
-            server.close();
-        } catch (IOException e) {
-            System.out.println("IO Error in streams " + e);
-        }
-    }
+//    public void finalize() {
+//        try {
+//            in.close();
+//            client.close();
+//            server.close();
+//        } catch (IOException e) {
+//            System.out.println("IO Error in streams " + e);
+//        }
+//    }
 }
 
 public class Server {

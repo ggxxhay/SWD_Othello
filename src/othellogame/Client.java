@@ -38,7 +38,7 @@ class ClientSide {
     public ClientSide(String host, int port) {
         this.host = host;
         this.port = port;
-        playGround = new PlayGround(-1);
+        playGround = new PlayGround(1);
         playGround.setVisible(true);
         playGround.setTitle("Client");
         makeConnectToServer();
@@ -95,9 +95,12 @@ class ClientSide {
                     int[] movePos = StaticVariables.ConvertMovePos(line);
                     System.out.println("cliii" + movePos[0] + "ccc" + movePos[1]);
                     if (movePos != null) {
+                        System.out.println("clieant");
                         playGround.controllers.playerTurn = 1;
-                        playGround.controllers.makeMove(movePos[0], movePos[1]);
+                        playGround.controllers.checkValidMove();
+                        playGround.controllers.makeMove("client", movePos[0], movePos[1]);
                         playGround.controllers.playerTurn = -1;
+                        System.out.println("clieant Player turn: " + playGround.controllers.playerTurn);
                         playGround.controllers.checkValidMove();
                     }
                 }
@@ -107,15 +110,15 @@ class ClientSide {
             System.out.println("IO Error in streams " + e);
         }
     }
-
-    public void finalize() {
-        try {
-            ou.close();
-            client.close();
-        } catch (IOException e) {
-            System.err.println("I/O error with " + host);
-        }
-    }
+//
+//    public void finalize() {
+//        try {
+//            ou.close();
+//            client.close();
+//        } catch (IOException e) {
+//            System.err.println("I/O error with " + host);
+//        }
+//    }
 }
 
 public class Client {

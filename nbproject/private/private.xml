@@ -3,12 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Mark%20Allen/Documents/SWD_Othello/src/othellogame/Server.java</file>
-            <file>file:/C:/Users/Mark%20Allen/Documents/SWD_Othello/src/othellogame/OthelloGame.java</file>
-            <file>file:/C:/Users/Mark%20Allen/Documents/SWD_Othello/src/UI/PlayGround.java</file>
-            <file>file:/C:/Users/Mark%20Allen/Documents/SWD_Othello/src/othellogame/StaticVariables.java</file>
-            <file>file:/C:/Users/Mark%20Allen/Documents/SWD_Othello/src/othellogame/Client.java</file>
-            <file>file:/C:/Users/Mark%20Allen/Documents/SWD_Othello/src/othellogame/Controller.java</file>
+            <file>file:/C:/Users/Mark%20Allen/Desktop/SWD_Othello/src/othellogame/Client.java</file>
+            <file>file:/C:/Users/Mark%20Allen/Desktop/SWD_Othello/src/UI/PlayGround.java</file>
+            <file>file:/C:/Users/Mark%20Allen/Desktop/SWD_Othello/src/othellogame/Controller.java</file>
+            <file>file:/C:/Users/Mark%20Allen/Desktop/SWD_Othello/src/othellogame/Server.java</file>
         </group>
     </open-files>
 </project-private>

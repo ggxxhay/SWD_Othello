@@ -5,6 +5,7 @@
  */
 package othellogame;
 
+import UI.PlayGround;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
@@ -28,7 +29,7 @@ import javax.swing.JPanel;
  * @author Mark Allen
  */
 public class Controller implements ActionListener {
-    
+
     public final int BUTTONSIZE = 40;
     DataOutputStream ou;
     // number of each row
@@ -37,7 +38,7 @@ public class Controller implements ActionListener {
     public Component[] listComponents;
     public boolean isStarted = false;
     public int playerTurn;
-    
+
     public final Integer[][] buttonState = new Integer[broadSize][broadSize];
     public final int invalidMoveCount = 0;
     public int blackCount = 2;
@@ -46,11 +47,10 @@ public class Controller implements ActionListener {
     public Controller(int playerTurn) {
         this.playerTurn = playerTurn;
     }
-    
-    
-    
+ 
+
     public void setProperty(int i, int j, JButton btn, int state) {
-        btn.setName("btn"+ i + "" + j);
+        btn.setName("btn" + i + "" + j);
         btn.setPreferredSize(new Dimension(BUTTONSIZE, BUTTONSIZE));
         switch (state) {
             case -1:
@@ -74,8 +74,7 @@ public class Controller implements ActionListener {
         btn.addActionListener(this);
         btn.setVisible(true);
     }
-    
-    
+
     public void initialChangeTurn(JLabel label) {
         if (playerTurn == 1) {
             label.setText("Your Turn");
@@ -83,73 +82,63 @@ public class Controller implements ActionListener {
             label.setText("Rival's Turn");
         }
     }
-    
-    public void initialPlayerPoint(JLabel label, JLabel label1) {
-        label.setText(blackCount+"");
-        label1.setText(whiteCount+"");
-    }
-    
+
     public void checkValidMove() {
         System.out.println("aa-" + playerTurn);
         int count = 0;
         for (int i = 0; i < broadSize; i++) {
             for (int j = 0; j < broadSize; j++) {
+                
                 if (isValidMove(playerTurn, i, j)) {
                     buttonState[i][j] = 2;
                     count++;
                 }
             }
         }
-    }
-    
-    public boolean isValidMove(int color, int row, int col) {
-        if (buttonState[row][col] != 0) {
-            return false;
-        }
         
-        int dr, dc;
-        for (dr = -1; dr <= 1; dr++) {            
-            for (dc = -1; dc <= 1; dc++) {
-                if (!(dr == 0 && dc == 0) && IsOutflanking(color, row, col, dr, dc))
-                    return true;
-            }
-        }
-        return false;
-    }
-    
-    public boolean IsOutflanking(int color, int row, int col, int dr, int dc)
-    {
-        int r = row + dr;
-        int c = col + dc;
-        while (r >= 0 && r < broadSize && c >= 0 && c < broadSize && buttonState[r][c] == -color)
-        {
-            r += dr;
-            c += dc;
-        }
-        if (r < 0 || r >= broadSize || c < 0 || c >= broadSize || (r - dr == row && c - dc == col) || buttonState[r][c] != color)
-            return false;
-        return true;
-    }
-    
-    
-    public void disableInvalidButton() {
-        int x= 0;
+        int x = 0;
         for (int i = 0; i < broadSize; i++) {
             for (int j = 0; j < broadSize; j++) {
                 System.out.print(buttonState[i][j] + "  ");
                 x++;
-                if (x==broadSize) {
+                if (x == broadSize) {
                     System.out.println();
-                    x=0;
-                }
-                if (buttonState[i][j] == 0) {
-                    JButton b = new JButton();
-                    b = (JButton) listComponents[i * 8 + j];
-                    b.removeActionListener(this);
+                    x = 0;
                 }
             }
         }
+        System.out.println("count" + count);
     }
+
+    public boolean isValidMove(int color, int row, int col) {
+        if (buttonState[row][col] != 0) {
+            return false;
+        }
+
+        int dr, dc;
+        for (dr = -1; dr <= 1; dr++) {
+            for (dc = -1; dc <= 1; dc++) {
+                if (!(dr == 0 && dc == 0) && IsOutflanking(color, row, col, dr, dc)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean IsOutflanking(int playerTurn, int row, int col, int dr, int dc) {
+        int r = row + dr;
+        int c = col + dc;
+        while (r >= 0 && r < broadSize && c >= 0 && c < broadSize && buttonState[r][c] == -playerTurn) {
+            r += dr;
+            c += dc;
+        }
+        if (r < 0 || r >= broadSize || c < 0 || c >= broadSize || (r - dr == row && c - dc == col) || buttonState[r][c] != playerTurn) {
+            return false;
+        }
+        return true;
+    }
+
     public void initialButton(JPanel myPanel) {
         //remove all Component in this panel
         myPanel.removeAll();
@@ -159,43 +148,34 @@ public class Controller implements ActionListener {
             for (int j = 0; j < broadSize; j++) {
                 JButton btn = new JButton();
                 myPanel.add(btn);
-                if (i==3 && j == 3) {
+                if (i == 3 && j == 3) {
                     setProperty(i, j, btn, -1);
                     buttonState[i][j] = -1;
-                    btn.removeActionListener(this);
-                } else
-                if (i==3 && j == 4) {
+                } else if (i == 3 && j == 4) {
                     setProperty(i, j, btn, 1);
                     buttonState[i][j] = 1;
-                    btn.removeActionListener(this);
-                } else
-                if (i==4 && j == 3) {
+                } else if (i == 4 && j == 3) {
                     setProperty(i, j, btn, 1);
                     buttonState[i][j] = 1;
-                    btn.removeActionListener(this);
-                } else
-                if (i==4 && j == 4) {
+                } else if (i == 4 && j == 4) {
                     setProperty(i, j, btn, -1);
                     buttonState[i][j] = -1;
-                    btn.removeActionListener(this);
                 } else {
                     setProperty(i, j, btn, 0);
                     buttonState[i][j] = 0;
                 }
             }
         }
-        
+
         // check all valid move
-        checkValidMove();
-        
+        if (playerTurn == 1) {
+            checkValidMove();
+        }
+
         listComponents = myPanel.getComponents();
         myPanel.revalidate();
-        
-        // remove action listener of invalid button
-        // can enable button = false because disable button's background not working
-        disableInvalidButton();
     }
-    
+
     public void updateButton(boolean isMoved) {
         System.out.println("aa-" + playerTurn);
         if (isMoved) {
@@ -207,7 +187,7 @@ public class Controller implements ActionListener {
                 }
             }
         }
-        
+
         for (int i = 0; i < broadSize; i++) {
             for (int j = 0; j < broadSize; j++) {
                 JButton b = new JButton();
@@ -221,35 +201,31 @@ public class Controller implements ActionListener {
                 }
             }
         }
-        disableInvalidButton();
     }
-    
-    public void makeMove(int row, int col) {
+
+    public void makeMove(String a, int row, int col) {
         // set piece that player clicked
+        System.out.println(a);
         if (buttonState[row][col] != 2) {
             return;
         }
-        
+
         buttonState[row][col] = playerTurn;
-        
+        System.out.println(a + ": " + row + "-" + col);
         if (playerTurn == 1) {
             whiteCount++;
         } else {
             blackCount++;
         }
-        
+
         int dr, dc;
         int r, c;
-        for (dr = -1; dr <= 1; dr++)
-        {
-            for (dc = -1; dc <= 1; dc++)
-            {
-                if (!(dr == 0 && dc == 0) && IsOutflanking(playerTurn, row, col, dr, dc))
-                {
+        for (dr = -1; dr <= 1; dr++) {
+            for (dc = -1; dc <= 1; dc++) {
+                if (!(dr == 0 && dc == 0) && IsOutflanking(playerTurn, row, col, dr, dc)) {
                     r = row + dr;
                     c = col + dc;
-                    while (buttonState[r][c] == -playerTurn)
-                    {
+                    while (buttonState[r][c] == -playerTurn) {
                         buttonState[r][c] = playerTurn;
                         blackCount -= playerTurn;
                         whiteCount += playerTurn;
@@ -261,22 +237,23 @@ public class Controller implements ActionListener {
         }
         System.out.println(blackCount + "-" + whiteCount);
         updateButton(true);
-        StaticVariables.movePosition = row+""+col;
-        System.out.println(StaticVariables.movePosition+"move pos");
+        StaticVariables.movePosition = row + "" + col;
+        System.out.println(StaticVariables.movePosition + "move pos");
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         // fake started game
         isStarted = true;
-        
+
         if (isStarted) {
             JButton btn = (JButton) e.getSource();
             // get index of button click
             int xClicked = Integer.parseInt(btn.getName().substring(btn.getName().length() - 2, btn.getName().length() - 1));
             int yClicked = Integer.parseInt(btn.getName().substring(btn.getName().length() - 1));
 //            System.out.println(xClicked + "-" + yClicked);
-            makeMove(xClicked, yClicked);
+            makeMove("", xClicked, yClicked);
+            
             System.out.println(StaticVariables.movePosition + "move");
             if (StaticVariables.movePosition != null) {
                 try {
@@ -289,5 +266,40 @@ public class Controller implements ActionListener {
             }
         }
     }
+    public boolean checkWin() {
+        int count = 0;
+        for (int i = 0; i < broadSize; i++) {
+            for (int j = 0; j < broadSize; j++) {
+                if (buttonState[i][j] == 0) {
+                    count++;
+                }
+            }
+        }
+        if (count > 0) {
+            return false;
+        }
+        return false;
+    }
+
+    public void playAgain() {
+        
+    }
     
+    public void gameOver() {
+        String message = "";
+        if (checkWin()) {
+            if (blackCount - whiteCount > 0) {
+                message = "Black win";
+            } else if (blackCount - whiteCount < 0) {
+                message = "White win";
+            } else {
+                message = "Hoa roi";
+            }
+            int result = JOptionPane.showConfirmDialog(null, message + "\nB: "+ blackCount + ", W: " + whiteCount, "Game done",
+            JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (result == JOptionPane.CLOSED_OPTION) {
+                System.exit(0);
+            }
+        }
+    }
 }

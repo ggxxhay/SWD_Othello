@@ -116,7 +116,7 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="youScore" min="-2" pref="54" max="-2" attributes="0"/>
+                          <Component id="blackScore" min="-2" pref="54" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
@@ -124,7 +124,7 @@
                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rivalScore" min="-2" pref="54" max="-2" attributes="0"/>
+                          <Component id="whiteScore" min="-2" pref="54" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -142,7 +142,7 @@
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jPanel2" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="rivalScore" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="whiteScore" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="3" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -153,7 +153,7 @@
                       <Component id="jPanel3" alignment="0" pref="41" max="32767" attributes="0"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="jLabel4" alignment="3" max="32767" attributes="0"/>
-                          <Component id="youScore" alignment="3" pref="41" max="32767" attributes="0"/>
+                          <Component id="blackScore" alignment="3" pref="41" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -222,7 +222,7 @@
             <Property name="text" type="java.lang.String" value="x "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="rivalScore">
+        <Component class="javax.swing.JLabel" name="whiteScore">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -249,7 +249,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="youScore">
+        <Component class="javax.swing.JLabel" name="blackScore">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
